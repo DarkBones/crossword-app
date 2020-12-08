@@ -9,16 +9,19 @@ debug_mode = False
 max_words = 0
 min_height = 8
 
+words = {}
+
 def main(argv):
 	parse_args(argv)
 
-	words = get_words()
+	get_words()
+	generate_puzzles()
 
 
 def get_words():
 	print_header('get words')
 
-	global max_words
+	global max_words, words
 
 	words_path = os.path.join('data', 'words')
 	f = open(words_path)
@@ -28,7 +31,11 @@ def get_words():
 	n = 0
 	for line in lines:
 		if n >= max_words and max_words > 0:
+			print(' reached max words', end='')
 			break
+
+		if n % 1000 == 0:
+			print('.', end='')
 
 		word = line.strip()
 		length = len(word)
@@ -40,8 +47,18 @@ def get_words():
 
 		n += 1
 
-	print(f'Found {n} words in {len(words)} different lengths')
-	return words
+	print(f'\nFound {n} words in {len(words)} different lengths')
+
+def generate_puzzles():
+	print_header('generate puzzles')
+
+	global min_height, words
+
+	for height in sorted(words.keys()):
+		if height < min_height:
+			continue
+
+		print(height)
 
 
 def parse_args(argv):
