@@ -1,6 +1,7 @@
+FROM ruby:2.7
+
 ENV APP_HOME=/app
 
-FROM ruby:2.7
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 WORKDIR /$APP_HOME
 COPY Gemfile /$APP_HOME/Gemfile
