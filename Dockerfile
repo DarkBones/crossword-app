@@ -1,35 +1,18 @@
-FROM ruby:2.7.1-alpine
-
-ENV BUNDLE_PATH /box
 ENV APP_HOME=/app
-ENV PATH=$APP_HOME/bin:$PATH
 
-RUN apk add --update --no-cache \
-    build-base \
-    linux-headers \
-    ca-certificates \
-    bash \
-    libpq \
-    git \
-    nodejs \
-    postgresql \
-    postgresql-client \
-    postgresql-dev \
-    yarn \
-    vim
-
-COPY Gemfile* /tmp/
-WORKDIR /tmp
-RUN gem install bundler
-RUN gem install rake
+FROM ruby:2.7
+RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+WORKDIR /$APP_HOME
+COPY Gemfile /$APP_HOME/Gemfile
+COPY Gemfile.lock /$APP_HOME/Gemfile.lock
 RUN bundle install
+COPY . /$APP_HOME
 
-ENV app /app
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
-ADD . $APP_HOME
-
+# Add a script to be executed every time the container starts.
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
 
-ENTRYPOINT ["bundle", "exec"]
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+# Start the main process.
+CMD ["rails", "server", "-b", "0.0.0.0"]
