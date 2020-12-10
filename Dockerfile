@@ -19,7 +19,6 @@ RUN apk add --update --no-cache \
     vim
 
 COPY Gemfile* /tmp/
-COPY vendor /tmp/vendor/
 WORKDIR /tmp
 RUN gem install bundler
 RUN gem install rake
