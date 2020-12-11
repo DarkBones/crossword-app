@@ -1,4 +1,6 @@
 class Word < ApplicationRecord
+	include Identifiable
+	
   # -- Constants ------------------------------------------------------------
 
   # -- Relationships --------------------------------------------------------
