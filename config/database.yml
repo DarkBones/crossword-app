@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  host: "<%= ENV['DB_HOST'] %>"
+  username: "<%= ENV['DB_USERNAME'] %>"
+  password: "<%= ENV['DB_PASSWORD'] %>"
+  pool: 5
+
+development:
+  <<: *default
+  database: crossword_development
+
+test:
+  <<: *default
+  database: crossword_test
+
+production:
+  <<: *default
+  database: crossword_production
