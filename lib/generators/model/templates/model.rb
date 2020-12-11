@@ -1,4 +1,4 @@
-class Class < ApplicationRecord
+class <%= class_name %> < ApplicationRecord
   # -- Constants ------------------------------------------------------------
 
   # -- Relationships --------------------------------------------------------
